@@ -24,3 +24,46 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.container {
+  max-width: 1145px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.light {
+  background-color: #f7fff6;
+  color: #111;
+}
+
+.dark {
+  background-color: #000000;
+  color: #f1eded;
+}
+
+.theme {
+  transition: 1s all ease;
+}
+
+.error {
+  color: rgb(226, 62, 62);
+  font-size: 12px;
+  text-align: left;
+}
+
+
+/*    Prefix	    Min Width	      Typical Device
+      sm:	        640px	          Mobile (landscape) / Tablet
+      md:	        768px	          Tablet
+      lg:	        1024px	        Laptop / Desktop
+      xl:	        1280px	        Large Desktop
+      2xl:	      1536px	        Very Large Screens */

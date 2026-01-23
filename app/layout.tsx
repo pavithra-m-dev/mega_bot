@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import Navbar from '@/components/navbar/Navbar';
+import Footer from '@/components/footer/Footer';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext"
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +31,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>
+          <div className="container">
+            <Navbar />
+            <main className="flex flex-1 items-start md:items-center py-10 md:py-0 pt-20">
+              <Toaster position="top-right" />
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
