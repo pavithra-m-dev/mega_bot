@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import { useForm } from 'react-hook-form';
 import { DevTool } from "@hookform/devtools";
@@ -38,6 +39,7 @@ const AddBlogPage = () => {
   const searchParams = useSearchParams();
   const blogId = searchParams.get("id");
   const isEditMode = Boolean(blogId);
+  const [existingImage, setExistingImage] = useState<string | null>(null);
 
 
   useEffect(() => {
@@ -48,6 +50,8 @@ const AddBlogPage = () => {
 
       const data = await editBlog.json();
       console.log("fetch data in edit mode", data);
+
+      setExistingImage(data.blogImageFile || null);
 
       reset({
         title: data.title,
@@ -89,6 +93,7 @@ const AddBlogPage = () => {
     if (res.ok) {
       toast.success(blogId ? "Blog Updated successfully" : "Blog added successfully!");
       router.push("/blog");
+      router.refresh(); 
     } else {
       toast.error("Failed to add blog");
     }
@@ -134,6 +139,23 @@ const AddBlogPage = () => {
               })}
             />
             <p className="error">{errors.author?.message}</p>
+            
+            {isEditMode && existingImage && (
+              <div className="mb-2">
+                <p className="text-sm text-gray-400 mb-1">
+                  Current Blog Image
+                </p>
+
+                <Image
+                  src={existingImage}
+                  alt="Current Blog"
+                  width={400}
+                  height={400}
+                  className="w-full h-48 object-cover rounded-md border border-gray-600"
+                />
+              </div>
+            )}
+
 
             <input
               type="file"

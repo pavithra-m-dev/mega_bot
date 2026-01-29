@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import DarkModeToggle from "../DarkModeToggle/darkModeToggle";
 import { LuMenu } from "react-icons/lu";
+import { ThemeContext } from "@/context/ThemeContext";
+import { useContext } from "react";
 
 const navLinks = [
   { id: 1, title: "Home", url: "/" },
@@ -11,14 +13,19 @@ const navLinks = [
   { id: 3, title: "Blog", url: "/blog" },
   { id: 4, title: "About", url: "/about" },
   { id: 5, title: "Contact", url: "/contact" },
-  { id: 6, title: "Dashboard", url: "/dashboard" }
+  { id: 6, title: "Videos", url: "/video" },
+  { id: 7, title: "Dashboard", url: "/dashboard" }
 ];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { mode } = useContext(ThemeContext);
+
+  console.log("Current theme mode:", mode);
 
   return (
-    <nav className="h-20 flex items-center justify-between w-full sticky top-0 z-50 px-4 py-1">
+    <nav className={`h-20 flex items-center justify-between w-full sticky top-0 z-50 px-4 py-1 ${mode === "dark" ? "bg-black text-white" : "bg-[#f7fff6] text-black"}`}
+    >
       <Link href="/about" className="font-bold text-[22px]"> Next Dev </Link>
 
       <div className="hidden md:flex items-center gap-5">

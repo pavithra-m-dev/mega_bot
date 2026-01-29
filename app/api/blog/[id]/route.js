@@ -73,23 +73,42 @@ export async function PUT(request, { params }) {
   }
 }
 
+
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
 
     await connectToMongoDB();
 
-    const deletedBlog = await Blog.findByIdAndDelete(id);
+    // find the blog first
+    const blog = await Blog.findById(id);
+    console.log("blog", blog);
 
-    if (!deletedBlog) {
+    if (!blog) {
       return new Response(
         JSON.stringify({ message: "Blog not found" }),
         { status: 404 }
-      );
+      )
     }
 
+    // Find the local image path to delete the local files
+    
+    if (blog.blogImageFile) {
+
+       const fileName = blog.blogImageFile.replace("/uploads/", "");
+       const imagePath = path.join( process.cwd(),"public","uploads",fileName);
+       
+       if(fs.existsSync(imagePath)){
+         fs.unlinkSync(imagePath);
+       }
+    }
+
+    // Delete blog from the db
+
+    await Blog.findByIdAndDelete(id);
+
     return new Response(
-      JSON.stringify({ message: "Blog deleted successfully" , deletedBlog}),
+      JSON.stringify({ message: "Blog deleted successfully"}),
       { status: 200 }
     );
   } catch (error) {
